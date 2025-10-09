@@ -56,6 +56,10 @@ Die Anwendung zeigt folgende Mining-Statistiken in Echtzeit an:
 - **Direktzugriff**: Jeder Artikel ist anklickbar und führt zum vollständigen Artikel in einem neuen Tab.
 - **Simulierte Daten**: Aktuell werden simulierte Nachrichtenartikel zu Demonstrationszwecken verwendet. Für die Integration echter Nachrichten wäre eine News-API erforderlich, die Monero-spezifische Filterung oder allgemeine Krypto-Nachrichten bietet.
 
+### ✅ Social Media Share Buttons
+- **Teilen-Funktion**: Ermöglicht das einfache Teilen der Anwendung auf Twitter, Facebook und Reddit.
+- **Monero-Branding**: Die Share Buttons sind im Monero-Stil (Orange) gehalten.
+
 ### ✅ Design und Benutzeroberfläche
 - **Monero-Branding**: Professionelles Orange-Farbschema (#FF6600)
 - **Dark Mode**: Standardmäßig aktiviert mit dunklem Hintergrund
@@ -83,6 +87,7 @@ Die Anwendung zeigt folgende Mining-Statistiken in Echtzeit an:
 - **Mining-Engine**: Simulierter Worker (Platzhalter für WebAssembly-Integration)
 - **Preis-API**: CoinGecko API (für Live-Preisdaten)
 - **News-API**: Simuliert (Platzhalter für zukünftige Integration einer echten News-API)
+- **Social Sharing**: `react-share` Bibliothek
 
 ### Mining-Implementierung
 
@@ -267,6 +272,7 @@ Beiträge sind willkommen! Mögliche Verbesserungen:
 - Performance-Optimierungen
 - Erweiterte Statistiken und Grafiken
 - Integration einer echten News-API für Monero-Nachrichten
+- Social Media Share Buttons für die News-Artikel (aktuell nur für die App)
 
 ## 📞 Support
 
