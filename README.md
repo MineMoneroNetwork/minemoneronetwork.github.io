@@ -44,6 +44,12 @@ Die Anwendung zeigt folgende Mining-Statistiken in Echtzeit an:
 - **Akzeptierte Shares**: Anzahl der vom Pool akzeptierten Shares
 - **Abgelehnte Shares**: Anzahl der abgelehnten Shares
 
+### ✅ Live Monero Preis & Chart
+- **Aktueller Preis**: Anzeige des aktuellen Monero-Preises in USD, EUR und BTC.
+- **24h Änderung**: Prozentuale Preisänderung der letzten 24 Stunden mit visueller Indikation (grün/rot, Auf-/Abwärtspfeil).
+- **Interaktiver Chart**: Ein Liniendiagramm, das den simulierten Preisverlauf der letzten 24 Stunden anzeigt.
+- **Ranking**: Anzeige des aktuellen Monero-Rankings nach Marktkapitalisierung.
+
 ### ✅ Design und Benutzeroberfläche
 - **Monero-Branding**: Professionelles Orange-Farbschema (#FF6600)
 - **Dark Mode**: Standardmäßig aktiviert mit dunklem Hintergrund
@@ -67,7 +73,9 @@ Die Anwendung zeigt folgende Mining-Statistiken in Echtzeit an:
 - **Styling**: Tailwind CSS
 - **UI-Komponenten**: shadcn/ui
 - **Icons**: Lucide React
+- **Charting Library**: Recharts
 - **Mining-Engine**: Simulierter Worker (Platzhalter für WebAssembly-Integration)
+- **Preis-API**: CoinGecko API (für Live-Preisdaten)
 
 ### Mining-Implementierung
 
@@ -87,7 +95,8 @@ monero-miner/
 ├── src/
 │   ├── assets/
 │   ├── components/
-│   │   └── ui/          # shadcn/ui Komponenten
+│   │   ├── ui/          # shadcn/ui Komponenten
+│   │   └── MoneroPrice.jsx # Monero Preis Komponente
 │   ├── App.jsx          # Haupt-Anwendungskomponente
 │   ├── App.css          # Monero-Themed Styles
 │   ├── translations.js  # Mehrsprachige Übersetzungen
