@@ -50,6 +50,12 @@ Die Anwendung zeigt folgende Mining-Statistiken in Echtzeit an:
 - **Interaktiver Chart**: Ein Liniendiagramm, das den simulierten Preisverlauf der letzten 24 Stunden anzeigt.
 - **Ranking**: Anzeige des aktuellen Monero-Rankings nach Marktkapitalisierung.
 
+### ✅ Monero News
+- **Aktuelle Nachrichten**: Eine Liste von Monero-bezogenen Nachrichtenartikeln.
+- **Artikeldetails**: Anzeige von Titel, Beschreibung, Quelle und Veröffentlichungszeitpunkt.
+- **Direktzugriff**: Jeder Artikel ist anklickbar und führt zum vollständigen Artikel in einem neuen Tab.
+- **Simulierte Daten**: Aktuell werden simulierte Nachrichtenartikel zu Demonstrationszwecken verwendet. Für die Integration echter Nachrichten wäre eine News-API erforderlich, die Monero-spezifische Filterung oder allgemeine Krypto-Nachrichten bietet.
+
 ### ✅ Design und Benutzeroberfläche
 - **Monero-Branding**: Professionelles Orange-Farbschema (#FF6600)
 - **Dark Mode**: Standardmäßig aktiviert mit dunklem Hintergrund
@@ -76,6 +82,7 @@ Die Anwendung zeigt folgende Mining-Statistiken in Echtzeit an:
 - **Charting Library**: Recharts
 - **Mining-Engine**: Simulierter Worker (Platzhalter für WebAssembly-Integration)
 - **Preis-API**: CoinGecko API (für Live-Preisdaten)
+- **News-API**: Simuliert (Platzhalter für zukünftige Integration einer echten News-API)
 
 ### Mining-Implementierung
 
@@ -96,7 +103,8 @@ monero-miner/
 │   ├── assets/
 │   ├── components/
 │   │   ├── ui/          # shadcn/ui Komponenten
-│   │   └── MoneroPrice.jsx # Monero Preis Komponente
+│   │   ├── MoneroPrice.jsx # Monero Preis Komponente
+│   │   └── MoneroNews.jsx  # Monero News Komponente
 │   ├── App.jsx          # Haupt-Anwendungskomponente
 │   ├── App.css          # Monero-Themed Styles
 │   ├── translations.js  # Mehrsprachige Übersetzungen
@@ -258,6 +266,7 @@ Beiträge sind willkommen! Mögliche Verbesserungen:
 - Weitere Sprachen unterstützen
 - Performance-Optimierungen
 - Erweiterte Statistiken und Grafiken
+- Integration einer echten News-API für Monero-Nachrichten
 
 ## 📞 Support
 
