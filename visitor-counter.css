@@ -1,0 +1,26 @@
+
+.visitor-counter-bar {
+  background-color: #1e293b; /* Dark background similar to consent popup */
+  color: #e2e8f0; /* Light text color */
+  padding: 8px 20px;
+  text-align: center;
+  font-size: 14px;
+  font-family: "Arial", sans-serif;
+  display: flex;
+  justify-content: center; /* Center content */
+  align-items: center;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Soft shadow */
+}
+
+.visitor-counter-item {
+  margin: 0 15px; /* Spacing between items */
+  white-space: nowrap; /* Keep items in one line */
+}
+
+.visitor-counter-item strong {
+  color: #f97316; /* Orange accent color */
+  font-weight: 600;
+}
+
