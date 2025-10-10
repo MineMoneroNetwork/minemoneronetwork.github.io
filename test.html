@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monero Wallet Generator</title>
+  <script src="https://cdn.jsdelivr.net/npm/monero-javascript@latest/dist/monero-javascript.min.js"></script>
+</head>
+<body style="font-family:sans-serif; background:#121212; color:#fff; text-align:center; padding:20px;">
+
+  <h2>🔒 Monero Wallet Generator</h2>
+  <button onclick="createWallet()" style="padding:10px 20px; border:none; border-radius:8px; background:#ff6600; color:#fff; cursor:pointer;">
+    Neues Wallet erstellen
+  </button>
+
+  <pre id="walletResult" style="white-space: pre-wrap; margin-top:20px; text-align:left; background:#1e1e1e; padding:15px; border-radius:10px; overflow:auto;"></pre>
+
+  <script>
+    async function createWallet() {
+      try {
+        const monerojs = await MoneroJs; // direktes Laden des globalen Objekts
+        const wallet = await monerojs.createWalletRandom({
+          networkType: "stagenet", // "mainnet" = echtes Netzwerk
+        });
+        
+        document.getElementById("walletResult").innerText =
+          "✅ Wallet erstellt!\n\n" +
+          "Adresse:\n" + wallet.getPrimaryAddress() + "\n\n" +
+          "Mnemonic (Seed):\n" + (await wallet.getMnemonic()) + "\n\n" +
+          "Bitte sicher speichern – nicht online aufbewahren!";
+      } catch (err) {
+        document.getElementById("walletResult").innerText = "Fehler: " + err.message;
+      }
+    }
+  </script>
+
+</body>
+</html>
