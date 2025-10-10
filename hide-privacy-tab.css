@@ -1,0 +1,31 @@
+/* Hide Privacy Policy Tab */
+button[role="tab"][aria-controls*="privacy"] {
+    display: none !important;
+}
+
+/* Adjust grid layout to 3 columns instead of 4 */
+button[role="tab"]:first-child:nth-last-child(4),
+button[role="tab"]:first-child:nth-last-child(4) ~ button[role="tab"] {
+    /* This targets when there are 4 tabs */
+}
+
+/* Change parent grid from 4 columns to 3 columns */
+.grid.grid-cols-4:has(button[role="tab"][aria-controls*="privacy"]) {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+/* Alternative: Target the parent container directly */
+button[role="tab"]:first-child:nth-last-child(4) {
+    /* Parent has 4 children, adjust to 3 */
+}
+
+button[role="tab"]:first-child:nth-last-child(4) ~ button[role="tab"]:nth-child(4) {
+    /* Hide the 4th tab (Privacy Policy) */
+    display: none !important;
+}
+
+/* Ensure the tab list adjusts properly */
+[role="tablist"]:has(button[aria-controls*="privacy"]) {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
