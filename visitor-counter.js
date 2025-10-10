@@ -1,60 +1,59 @@
 
-import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom/client';
-
-const VisitorCounter = () => {
-  const [totalVisitors, setTotalVisitors] = useState(0);
-  const [todayVisitors, setTodayVisitors] = useState(0);
-  const [onlineVisitors, setOnlineVisitors] = useState(0);
-
-  useEffect(() => {
-    // Initialize or retrieve visitor data from localStorage
-    const storedTotal = localStorage.getItem('totalVisitors');
-    const storedToday = localStorage.getItem('todayVisitors');
-    const storedLastVisitDate = localStorage.getItem('lastVisitDate');
-
+(function() {
+  function getVisitorData() {
     const today = new Date().toDateString();
 
-    let currentTotal = storedTotal ? parseInt(storedTotal, 10) : 37548; // Starting value from image
-    let currentToday = storedToday ? parseInt(storedToday, 10) : 0;
+    let totalVisitors = parseInt(localStorage.getItem("totalVisitors") || "37548", 10);
+    let todayVisitors = parseInt(localStorage.getItem("todayVisitors") || "0", 10);
+    let lastVisitDate = localStorage.getItem("lastVisitDate");
 
-    if (storedLastVisitDate !== today) {
-      // New day, reset today's visitors
-      currentToday = 0;
-      localStorage.setItem('lastVisitDate', today);
+    if (lastVisitDate !== today) {
+      todayVisitors = 0;
+      localStorage.setItem("lastVisitDate", today);
     }
 
-    // Increment total and today's visitors for this visit
-    currentTotal += 1;
-    currentToday += 1;
+    totalVisitors++;
+    todayVisitors++;
 
-    localStorage.setItem('totalVisitors', currentTotal);
-    localStorage.setItem('todayVisitors', currentToday);
-    setTotalVisitors(currentTotal);
-    setTodayVisitors(currentToday);
+    localStorage.setItem("totalVisitors", totalVisitors);
+    localStorage.setItem("todayVisitors", todayVisitors);
 
-    // Simulate online visitors (can be more sophisticated with a backend)
-    const currentOnline = Math.floor(Math.random() * 20) + 1; // Random number for demonstration
-    setOnlineVisitors(currentOnline);
+    return { totalVisitors, todayVisitors };
+  }
+
+  function renderVisitorCounter() {
+    const { totalVisitors, todayVisitors } = getVisitorData();
+    const onlineVisitors = Math.floor(Math.random() * 20) + 1; // Simulate online visitors
+
+    let counterBar = document.getElementById("visitor-counter-bar");
+    if (!counterBar) {
+      counterBar = document.createElement("div");
+      counterBar.id = "visitor-counter-bar";
+      counterBar.className = "visitor-counter-bar";
+      document.body.appendChild(counterBar);
+    }
+
+    counterBar.innerHTML = `
+      <span class="visitor-counter-item">Gesamt: <strong>${totalVisitors}</strong></span>
+      <span class="visitor-counter-item">Heute: <strong>${todayVisitors}</strong></span>
+      <span class="visitor-counter-item">Online: <strong>${onlineVisitors}</strong></span>
+    `;
 
     // Update online visitors every 30 seconds
-    const interval = setInterval(() => {
-      setOnlineVisitors(Math.floor(Math.random() * 20) + 1);
+    setInterval(() => {
+      const currentOnline = Math.floor(Math.random() * 20) + 1;
+      const onlineSpan = counterBar.querySelector(".visitor-counter-item:nth-child(3) strong");
+      if (onlineSpan) {
+        onlineSpan.textContent = currentOnline;
+      }
     }, 30000);
+  }
 
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div className="visitor-counter-bar">
-      <span className="visitor-counter-item">Gesamt: <strong>{totalVisitors}</strong></span>
-      <span className="visitor-counter-item">Heute: <strong>{todayVisitors}</strong></span>
-      <span className="visitor-counter-item">Online: <strong>{onlineVisitors}</strong></span>
-    </div>
-  );
-};
-
-// Render the component
-const counterRoot = ReactDOM.createRoot(document.getElementById('visitor-counter-root'));
-counterRoot.render(<VisitorCounter />);
+  // Run when the DOM is fully loaded
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", renderVisitorCounter);
+  } else {
+    renderVisitorCounter();
+  }
+})();
 
