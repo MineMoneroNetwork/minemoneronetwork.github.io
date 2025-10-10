@@ -60,6 +60,16 @@ Die Anwendung zeigt folgende Mining-Statistiken in Echtzeit an:
 - **Teilen-Funktion**: Ermöglicht das einfache Teilen der Anwendung auf Twitter, Facebook und Reddit.
 - **Monero-Branding**: Die Share Buttons sind im Monero-Stil (Orange) gehalten.
 
+### ✅ Benutzerzustimmung zum Mining
+- **Explizite Zustimmung**: Mining beginnt nur nach aktiver Zustimmung des Benutzers über ein spezielles Dialogfeld.
+- **Transparenz**: Der Benutzer wird über die Auswirkungen des Minings auf die CPU-Ressourcen und den Stromverbrauch informiert.
+- **Widerruf der Zustimmung**: Die Zustimmung kann jederzeit in den Einstellungen widerrufen werden.
+
+### ✅ Datenschutzerklärung
+- **Separate Seite**: Eine vollständige Datenschutzerklärung ist auf einer eigenen Seite innerhalb der Anwendung verfügbar.
+- **Transparenz**: Erläutert, welche Daten lokal gespeichert werden, wie Mining funktioniert und welche Drittanbieterdienste genutzt werden.
+- **Verlinkung**: Ein Link zur Datenschutzerklärung ist im Footer der Anwendung und in den Mining-Zustimmungsdialog integriert.
+
 ### ✅ Design und Benutzeroberfläche
 - **Monero-Branding**: Professionelles Orange-Farbschema (#FF6600)
 - **Dark Mode**: Standardmäßig aktiviert mit dunklem Hintergrund
@@ -109,7 +119,9 @@ monero-miner/
 │   ├── components/
 │   │   ├── ui/          # shadcn/ui Komponenten
 │   │   ├── MoneroPrice.jsx # Monero Preis Komponente
-│   │   └── MoneroNews.jsx  # Monero News Komponente
+│   │   ├── MoneroNews.jsx  # Monero News Komponente
+│   │   ├── MiningConsent.jsx # Mining Zustimmung Komponente
+│   │   └── PrivacyPolicy.jsx # Datenschutzerklärung Komponente
 │   ├── App.jsx          # Haupt-Anwendungskomponente
 │   ├── App.css          # Monero-Themed Styles
 │   ├── translations.js  # Mehrsprachige Übersetzungen
@@ -277,7 +289,7 @@ Beiträge sind willkommen! Mögliche Verbesserungen:
 ## 📞 Support
 
 Für Fragen oder Probleme:
-- GitHub Issues: https://github.com/MineMoneroNetwork/mmn.github.io/issues
+- GitHub Issues: https://github.com/MineMoneroNetwork/minemoneronetwork.github.io/issues
 - Monero Community: https://www.reddit.com/r/Monero/
 
 ## 🎉 Danksagungen
