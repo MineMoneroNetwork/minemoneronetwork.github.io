@@ -4,6 +4,10 @@
 
 Der **Monero Web Miner** ist eine moderne, professionelle Web-Anwendung, die es Benutzern ermöglicht, Monero (XMR) direkt in ihrem Browser zu minen. Die Anwendung wurde mit React entwickelt und bietet eine benutzerfreundliche Oberfläche mit vollem Dark/Light Mode Support und mehrsprachiger Unterstützung.
 
+## Übersicht
+
+Der **Monero Web Miner** ist eine moderne, professionelle Web-Anwendung, die es Benutzern ermöglicht, Monero (XMR) direkt in ihrem Browser zu minen. Die Anwendung wurde mit React entwickelt und bietet eine benutzerfreundliche Oberfläche mit vollem Dark/Light Mode Support und mehrsprachiger Unterstützung.
+
 ## 🌟 Hauptfunktionen
 
 ### ✅ Wallet-Konfiguration
@@ -41,7 +45,7 @@ Für jeden Pool werden angezeigt:
 Die Anwendung zeigt folgende Mining-Statistiken in Echtzeit an:
 - **Status**: Idle / Mining läuft / Verbinden
 - **Hashrate**: Aktuelle Hashrate in H/s (Hashes pro Sekunde)
-- **Akzeptierte Shares**: Anzahl der vom Pool akzeptierten Shares
+- **Akzeptierte Shares**: Anzahl der vom Pool akzeptierter Shares
 - **Abgelehnte Shares**: Anzahl der abgelehnten Shares
 
 ### ✅ Live Monero Preis & Chart
@@ -302,4 +306,5 @@ Für Fragen oder Probleme:
 ---
 
 **Viel Erfolg beim Mining! 🚀**
+
 
