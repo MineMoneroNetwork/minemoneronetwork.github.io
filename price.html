@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monero Price - Live XMR Chart</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico?v=1760155951" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(30, 30, 30, 0.6);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ff6b35 0%, #ff1493 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .title-section h1 {
+            font-size: 28px;
+            background: linear-gradient(135deg, #ff6b35 0%, #ff1493 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+        }
+
+        .title-section p {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-link {
+            padding: 10px 20px;
+            background: rgba(255, 107, 53, 0.1);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            border-radius: 8px;
+            color: #ff6b35;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 107, 53, 0.2);
+            border-color: #ff6b35;
+            transform: translateY(-2px);
+        }
+
+        .main-card {
+            background: rgba(30, 30, 30, 0.6);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid;
+            border-image: linear-gradient(135deg, #ff6b35 0%, #ff1493 100%) 1;
+            margin-bottom: 20px;
+        }
+
+        .price-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .price-info {
+            flex: 1;
+        }
+
+        .coin-name {
+            font-size: 18px;
+            color: #888;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rank-badge {
+            background: rgba(255, 107, 53, 0.2);
+            color: #ff6b35;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .current-price {
+            font-size: 48px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .price-change {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 16px;
+        }
+
+        .btc-price {
+            color: #888;
+        }
+
+        .change-positive {
+            color: #00ff88;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .change-negative {
+            color: #ff4444;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .time-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .time-btn {
+            padding: 8px 16px;
+            background: rgba(50, 50, 50, 0.5);
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            border-radius: 8px;
+            color: #888;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .time-btn:hover {
+            background: rgba(255, 107, 53, 0.1);
+            color: #ff6b35;
+        }
+
+        .time-btn.active {
+            background: linear-gradient(135deg, #ff6b35 0%, #ff1493 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin-top: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            background: rgba(40, 40, 40, 0.5);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 107, 53, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(255, 107, 53, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .stat-label {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            color: #fff;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 107, 53, 0.1);
+            border-top: 3px solid #ff6b35;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            padding: 20px;
+            border-radius: 12px;
+            color: #ff4444;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .price-header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .current-price {
+                font-size: 36px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-section">
+                <div class="logo">M</div>
+                <div class="title-section">
+                    <h1>Monero Price Tracker</h1>
+                    <p>Real-time XMR market data</p>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Mining</a>
+                <a href="/price.html" class="nav-link" style="background: rgba(255, 107, 53, 0.2); border-color: #ff6b35;">Price</a>
+            </div>
+        </div>
+
+        <div class="main-card">
+            <div id="loading" class="loading">
+                <div class="spinner"></div>
+                <p>Loading Monero price data...</p>
+            </div>
+
+            <div id="content" style="display: none;">
+                <div class="price-header">
+                    <div class="price-info">
+                        <div class="coin-name">
+                            <span>Monero</span>
+                            <span class="rank-badge" id="rank">#26</span>
+                        </div>
+                        <div class="current-price" id="currentPrice">$0.00</div>
+                        <div class="price-change">
+                            <span class="btc-price" id="btcPrice">₿ 0.000000</span>
+                            <span id="priceChange" class="change-positive">
+                                <span>▲</span>
+                                <span>0.00%</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="time-filters">
+                        <button class="time-btn" data-days="1">1 Std.</button>
+                        <button class="time-btn active" data-days="1">24 Std.</button>
+                        <button class="time-btn" data-days="7">7 Tg.</button>
+                        <button class="time-btn" data-days="30">30 Tg.</button>
+                        <button class="time-btn" data-days="90">90 Tg.</button>
+                        <button class="time-btn" data-days="365">1 J.</button>
+                        <button class="time-btn" data-days="max">Alle</button>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="priceChart"></canvas>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Market Cap</div>
+                        <div class="stat-value" id="marketCap">$0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">24h Volume</div>
+                        <div class="stat-value" id="volume24h">$0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Circulating Supply</div>
+                        <div class="stat-value" id="circulatingSupply">0 XMR</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">24h High</div>
+                        <div class="stat-value" id="high24h">$0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">24h Low</div>
+                        <div class="stat-value" id="low24h">$0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">All Time High</div>
+                        <div class="stat-value" id="ath">$0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="error" style="display: none;" class="error">
+                <p>Failed to load price data. Please try again later.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let chart = null;
+        let currentDays = 1;
+
+        // Format number with commas
+        function formatNumber(num) {
+            return new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(num);
+        }
+
+        // Format large numbers (K, M, B)
+        function formatLargeNumber(num) {
+            if (num >= 1e9) {
+                return '$' + (num / 1e9).toFixed(2) + 'B';
+            } else if (num >= 1e6) {
+                return '$' + (num / 1e6).toFixed(2) + 'M';
+            } else if (num >= 1e3) {
+                return '$' + (num / 1e3).toFixed(2) + 'K';
+            }
+            return '$' + formatNumber(num);
+        }
+
+        // Fetch current price data
+        async function fetchPriceData() {
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/coins/monero?localization=false&tickers=false&community_data=false&developer_data=false');
+                const data = await response.json();
+                
+                // Update price info
+                document.getElementById('rank').textContent = '#' + data.market_cap_rank;
+                document.getElementById('currentPrice').textContent = '$' + formatNumber(data.market_data.current_price.usd);
+                document.getElementById('btcPrice').textContent = '₿ ' + data.market_data.current_price.btc.toFixed(6);
+                
+                // Update price change
+                const change24h = data.market_data.price_change_percentage_24h;
+                const changeElement = document.getElementById('priceChange');
+                if (change24h >= 0) {
+                    changeElement.className = 'change-positive';
+                    changeElement.innerHTML = '<span>▲</span><span>' + change24h.toFixed(2) + '%</span>';
+                } else {
+                    changeElement.className = 'change-negative';
+                    changeElement.innerHTML = '<span>▼</span><span>' + Math.abs(change24h).toFixed(2) + '%</span>';
+                }
+                
+                // Update stats
+                document.getElementById('marketCap').textContent = formatLargeNumber(data.market_data.market_cap.usd);
+                document.getElementById('volume24h').textContent = formatLargeNumber(data.market_data.total_volume.usd);
+                document.getElementById('circulatingSupply').textContent = formatNumber(data.market_data.circulating_supply) + ' XMR';
+                document.getElementById('high24h').textContent = '$' + formatNumber(data.market_data.high_24h.usd);
+                document.getElementById('low24h').textContent = '$' + formatNumber(data.market_data.low_24h.usd);
+                document.getElementById('ath').textContent = '$' + formatNumber(data.market_data.ath.usd);
+                
+                return true;
+            } catch (error) {
+                console.error('Error fetching price data:', error);
+                return false;
+            }
+        }
+
+        // Fetch chart data
+        async function fetchChartData(days = 1) {
+            try {
+                const response = await fetch(`https://api.coingecko.com/api/v3/coins/monero/market_chart?vs_currency=usd&days=${days}`);
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching chart data:', error);
+                return null;
+            }
+        }
+
+        // Create or update chart
+        function updateChart(data) {
+            const ctx = document.getElementById('priceChart').getContext('2d');
+            
+            const prices = data.prices.map(p => ({
+                x: new Date(p[0]),
+                y: p[1]
+            }));
+
+            const volumes = data.total_volumes.map(v => ({
+                x: new Date(v[0]),
+                y: v[1]
+            }));
+
+            // Determine if price is going up or down
+            const firstPrice = prices[0].y;
+            const lastPrice = prices[prices.length - 1].y;
+            const isPositive = lastPrice >= firstPrice;
+
+            if (chart) {
+                chart.destroy();
+            }
+
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: 'Price (USD)',
+                        data: prices,
+                        borderColor: isPositive ? '#00ff88' : '#ff4444',
+                        backgroundColor: isPositive 
+                            ? 'rgba(0, 255, 136, 0.1)' 
+                            : 'rgba(255, 68, 68, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: isPositive ? '#00ff88' : '#ff4444',
+                        pointHoverBorderColor: '#fff',
+                        pointHoverBorderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(30, 30, 30, 0.95)',
+                            titleColor: '#ff6b35',
+                            bodyColor: '#fff',
+                            borderColor: 'rgba(255, 107, 53, 0.5)',
+                            borderWidth: 1,
+                            padding: 12,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return '$' + formatNumber(context.parsed.y);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: currentDays <= 1 ? 'hour' : currentDays <= 7 ? 'day' : 'week'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#888'
+                            }
+                        },
+                        y: {
+                            position: 'right',
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#888',
+                                callback: function(value) {
+                                    return '$' + formatNumber(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize dashboard
+        async function initDashboard() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('content').style.display = 'none';
+            document.getElementById('error').style.display = 'none';
+
+            const priceSuccess = await fetchPriceData();
+            const chartData = await fetchChartData(currentDays);
+
+            if (priceSuccess && chartData) {
+                updateChart(chartData);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+            } else {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+
+        // Time filter buttons
+        document.querySelectorAll('.time-btn').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                const days = this.getAttribute('data-days');
+                currentDays = days === 'max' ? 'max' : parseInt(days);
+                
+                // Update active state
+                document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Fetch and update chart
+                const chartData = await fetchChartData(currentDays);
+                if (chartData) {
+                    updateChart(chartData);
+                }
+            });
+        });
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM loaded, initializing dashboard...');
+            initDashboard().catch(err => {
+                console.error('Dashboard initialization error:', err);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+            });
+        });
+
+        // Also try immediate initialization if DOM is already loaded
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            console.log('DOM already loaded, initializing dashboard immediately...');
+            setTimeout(() => {
+                initDashboard().catch(err => {
+                    console.error('Dashboard initialization error:', err);
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('error').style.display = 'block';
+                });
+            }, 100);
+        }
+
+        // Auto-refresh every 60 seconds
+        setInterval(() => {
+            fetchPriceData();
+            fetchChartData(currentDays).then(data => {
+                if (data) updateChart(data);
+            });
+        }, 60000);
+    </script>
+</body>
+</html>
+
